@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id = "root"></div>
+    </body>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const unitPair = {
+            TIME: ["Minutes", "Hours", (m) => m/60, (h) => h*60],
+            METER: ["Meter", "Kilometer", (m) => m*1000, (km) => km/1000]
+        };
+
+        const Selector = ({currentUnit, setCurrentUnit}) => {
+            return (
+                <div>
+                    <select value={currentUnit} onChange = {(e) => setCurrentUnit(e.target.value)}>
+                        <option value="TIME">Minutes & Hours</option>
+                        <option value="METER">Meter & Kilometer</option>
+                    </select>
+                </div>
+            );
+        }
+
+        const Converter = ({currentUnit}) => {
+            const [inputValue, setInputValue] = React.useState(0);
+            const [flipped, setFlipped] = React.useState(false);
+            
+            const beforeValue = flipped ? unitPair[currentUnit][0] : unitPair[currentUnit][1];
+            const afterValue = !flipped ? unitPair[currentUnit][0] : unitPair[currentUnit][1];
+            const convert = flipped ? unitPair[currentUnit][2] : unitPair[currentUnit][3];
+
+            const resetValue = () => setInputValue(0);
+            const flip = () => {
+                resetValue();
+                setFlipped((current) => !current);
+            }
+
+            return (
+                <div>
+
+                    <label htmlFor = "beforeValue">{beforeValue}</label>
+                    <input
+                        id = "beforeValue" placeholder = {beforeValue} 
+                        value = {inputValue} type="number"
+                        onChange = {(e) => setInputValue(e.target.value)}
+                    />
+
+                    <div>
+                    <button onClick = {resetValue}> Reset </button>
+                    <button onClick = {flip}> Flip </button>
+                    </div>
+
+                    <label htmlFor = "afterValue">{afterValue}</label>
+                    <input
+                        id = "afterValue" placeholder = {afterValue}
+                        value = {convert(inputValue)} type="number"
+                    />
+
+                </div>
+            );
+        };
+
+        const App = () => {
+            const [currentUnit, setCurrentUnit] = React.useState("TIME");
+
+            return (
+                <div>
+                    <h1>Super Converter</h1>
+                    <Selector currentUnit={currentUnit} setCurrentUnit={setCurrentUnit} />
+                    <Converter currentUnit={currentUnit}/>
+                </div>
+            );
+        }
+
+        const root = document.getElementById("root");
+        ReactDOM.render(<App />, root);
+    </script>
+
+</html>
