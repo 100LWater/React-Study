@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <div id = "root"></div>
+    </body>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <script type="text/babel">
+        const root = document.getElementById("root");
+
+        const Btn = ({text}) => (
+            <button
+                style={{
+                        backgroundColor: "tomato",
+                        color: "white",
+                        padding: "10px 20px",
+                        border: 0,
+                        borderRadius: 10,
+                }}
+            >
+            {text}
+            </button>
+        );
+
+        const App = () => {
+            return (
+                <div>
+                    <Btn text="button1"/>
+                    <Btn text="button2"/>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<App />, root);
+    </script>
+
+</html>
